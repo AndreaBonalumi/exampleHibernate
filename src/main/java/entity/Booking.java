@@ -1,9 +1,9 @@
 package entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import org.hibernate.annotations.Generated;
 
+import org.jetbrains.annotations.NotNull;
+
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
