@@ -29,23 +29,6 @@ public class HelloServlet extends HttpServlet {
         out.println("<html><body>");
         out.println("<h1>" + message + "</h1>");
         out.println("</body></html>");
-
-        Date date = new Date();
-
-        // Crea un nuovo oggetto User
-        User user = new User();
-        user.setId(1);
-        user.setUsername("user1");
-        user.setPassword("password");
-        user.setLastName("password");
-        user.setFirstName("user1");
-        user.setAdmin(true);
-        user.setBirthday(date);
-        user.setCreated(date);
-        user.setEmail("user1@si2001.it");
-
-
-        userDao.Insert(user);
     }
     public void destroy() {
     }

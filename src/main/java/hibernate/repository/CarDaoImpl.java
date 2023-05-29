@@ -1,22 +1,24 @@
 package hibernate.repository;
 
-import entity.User;
+import entity.Car;
 import hibernateConf.HibernateConf;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
-public class UserDaoImpl implements UserDao {
+public class CarDaoImpl implements CarDao {
     private final Session session;
 
-    public UserDaoImpl () {session = HibernateConf.getSessionFactory().openSession()}
+    public CarDaoImpl() {
+        session = HibernateConf.getSessionFactory().openSession();
+    }
+
     @Override
     @SuppressWarnings("unchecked")
-    public List<User> getAll() {
+    public List<Car> getAll() {
         try {
-            String JPQL = "FROM User";
+            String JPQL = "FROM Car";
             return session.createQuery(JPQL).getResultList();
 
         } catch (Exception e) {
@@ -26,10 +28,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getById(int id) {
+    public Car getById(int id) {
         try {
-            String JPQL = "FROM User WHERE User.id = :id";
-            return (User) session.createQuery(JPQL).setParameter("id", id).getSingleResult();
+            String JPQL = "FROM Car WHERE id = :id";
+            return (Car) session.createQuery(JPQL).setParameter("id", id).getSingleResult();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -38,27 +40,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void edit(User user) {
+    public void insert(Car car) {
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            session.merge(user);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override
-    public void delete(User user) {
-        Transaction transaction = null;
-        try {
-            transaction = session.beginTransaction();
-            session.delete(user);
+            session.save(car);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -69,11 +55,26 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void Insert(User user) {
+    public void delete(Car car) {
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            session.save(user);
+            session.delete(car);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void edit(Car car) {
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.merge(car);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
