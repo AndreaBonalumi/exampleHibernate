@@ -11,7 +11,7 @@ import java.util.List;
 public class UserDaoImpl implements UserDao {
     private final Session session;
 
-    public UserDaoImpl () {session = HibernateConf.getSessionFactory().openSession()}
+    public UserDaoImpl () {session = HibernateConf.getSessionFactory().openSession();}
     @Override
     @SuppressWarnings("unchecked")
     public List<User> getAll() {
