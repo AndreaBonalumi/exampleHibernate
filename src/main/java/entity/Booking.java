@@ -4,7 +4,7 @@ package entity;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Booking {
@@ -15,17 +15,17 @@ public class Booking {
 
     @NotNull
     @Temporal(TemporalType.DATE)
-    private Date dateBookingStart;
+    private LocalDate dateBookingStart;
 
     @NotNull
     @Temporal(TemporalType.DATE)
-    private Date getDateBookingEnd;
+    private LocalDate getDateBookingEnd;
 
     @ManyToOne
-    private User idUser;
+    private User user;
 
     @ManyToOne
-    private Car idCar;
+    private Car car;
 
     public int getId() {
         return id;
@@ -35,35 +35,35 @@ public class Booking {
         this.id = id;
     }
 
-    public Date getDateBookingStart() {
+    public LocalDate getDateBookingStart() {
         return dateBookingStart;
     }
 
-    public void setDateBookingStart(Date dateBookingStart) {
+    public void setDateBookingStart(LocalDate dateBookingStart) {
         this.dateBookingStart = dateBookingStart;
     }
 
-    public Date getGetDateBookingEnd() {
+    public LocalDate getGetDateBookingEnd() {
         return getDateBookingEnd;
     }
 
-    public void setGetDateBookingEnd(Date getDateBookingEnd) {
+    public void setGetDateBookingEnd(LocalDate getDateBookingEnd) {
         this.getDateBookingEnd = getDateBookingEnd;
     }
 
-    public User getIdUser() {
-        return idUser;
+    public User getUser() {
+        return user;
     }
 
-    public void setIdUser(User idUser) {
-        this.idUser = idUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Car getIdCar() {
-        return idCar;
+    public Car getCar() {
+        return car;
     }
 
-    public void setIdCar(Car idCar) {
-        this.idCar = idCar;
+    public void setCar(Car car) {
+        this.car = car;
     }
 }

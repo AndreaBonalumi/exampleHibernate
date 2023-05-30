@@ -1,5 +1,5 @@
 <%@ page import="entity.Car" %>
-<%@ page import="hibernate.repository.CarDaoImpl" %><%--
+<%@ page import="hibernate.repository.impl.CarDaoImpl" %><%--
   Created by IntelliJ IDEA.
   User: Si2001
   Date: 30/05/2023

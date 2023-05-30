@@ -1,7 +1,7 @@
 package com.example.examplehibernate;
 
 import entity.Car;
-import hibernate.repository.CarDaoImpl;
+import hibernate.repository.impl.CarDaoImpl;
 
 import javax.servlet.*;
 import javax.servlet.http.*;

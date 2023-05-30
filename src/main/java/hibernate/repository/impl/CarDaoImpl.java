@@ -1,21 +1,19 @@
-package hibernate.repository;
+package hibernate.repository.impl;
 
-import entity.Booking;
+import entity.Car;
+import hibernate.repository.CarDao;
 import hibernateConf.HibernateConf;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
-public class BookingDaoImpl implements BookingDao{
-    Session session;
-    public BookingDaoImpl() { session = HibernateConf.getSessionFactory().openSession();}
+public class CarDaoImpl implements CarDao {
     @Override
     @SuppressWarnings("unchecked")
-    public List<Booking> getAll() {
-        try {
-            String JPQL = "FROM Booking";
+    public List<Car> getAll() {
+        try (Session session = HibernateConf.getSessionFactory().openSession()) {
+            String JPQL = "FROM Car";
             return session.createQuery(JPQL).getResultList();
 
         } catch (Exception e) {
@@ -25,11 +23,11 @@ public class BookingDaoImpl implements BookingDao{
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List<Booking> getByIdUser(int id) {
-        try {
-            String JPQL = "from Booking b join fetch b.idCar join b.idUser where b.idUser = :id";
-            return session.createQuery(JPQL).setParameter("id", id).getResultList();
+    public Car getById(int id) {
+        try (Session session = HibernateConf.getSessionFactory().openSession()) {
+            String JPQL = "FROM Car WHERE id = :id";
+            return (Car) session.createQuery(JPQL).setParameter("id", id).getSingleResult();
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -37,13 +35,12 @@ public class BookingDaoImpl implements BookingDao{
     }
 
     @Override
-    public void insert(Booking booking) {
+    public void insert(Car car) {
         Transaction transaction = null;
-        try {
+        try (Session session = HibernateConf.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.save(booking);
+            session.save(car);
             transaction.commit();
-
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -53,14 +50,12 @@ public class BookingDaoImpl implements BookingDao{
     }
 
     @Override
-    public void delete(Booking booking) {
+    public void delete(Car car) {
         Transaction transaction = null;
-
-        try {
+        try (Session session = HibernateConf.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.delete(booking);
+            session.delete(car);
             transaction.commit();
-
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -70,14 +65,12 @@ public class BookingDaoImpl implements BookingDao{
     }
 
     @Override
-    public void edit(Booking booking) {
+    public void edit(Car car) {
         Transaction transaction = null;
-
-        try {
+        try (Session session = HibernateConf.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.merge(booking);
+            session.merge(car);
             transaction.commit();
-
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();

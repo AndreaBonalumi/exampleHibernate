@@ -5,12 +5,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import entity.User;
-import hibernate.repository.UserDaoImpl;
+import hibernate.repository.impl.UserDaoImpl;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 
 
 @WebServlet(name = "helloServlet", value = "/hello-servlet")

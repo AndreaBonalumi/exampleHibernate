@@ -2,7 +2,7 @@ package com.example.examplehibernate;
 
 import entity.Booking;
 import entity.User;
-import hibernate.repository.BookingDaoImpl;
+import hibernate.repository.impl.BookingDaoImpl;
 
 import javax.servlet.*;
 import javax.servlet.http.*;

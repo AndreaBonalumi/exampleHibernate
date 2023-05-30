@@ -3,7 +3,7 @@ package entity;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,9 +23,11 @@ public class Car {
     private String color;
     @NotNull
     @Temporal(TemporalType.DATE)
-    private Date created;
+    private LocalDate created;
     private String link;
     private String description;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "Car", orphanRemoval = true)
+    private Set<Booking> bookingSet = new HashSet<>();
 
     public int getId() {
         return id;
@@ -67,11 +69,11 @@ public class Car {
         this.color = color;
     }
 
-    public Date getCreated() {
+    public LocalDate getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(LocalDate created) {
         this.created = created;
     }
 
@@ -99,6 +101,4 @@ public class Car {
         this.bookingSet = bookingSet;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "idCar", orphanRemoval = true)
-    private Set<Booking> bookingSet = new HashSet<>();
 }

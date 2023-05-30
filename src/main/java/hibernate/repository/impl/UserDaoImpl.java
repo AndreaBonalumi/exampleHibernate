@@ -1,6 +1,7 @@
-package hibernate.repository;
+package hibernate.repository.impl;
 
 import entity.User;
+import hibernate.repository.UserDao;
 import hibernateConf.HibernateConf;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

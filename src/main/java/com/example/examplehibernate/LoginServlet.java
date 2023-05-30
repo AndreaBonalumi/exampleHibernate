@@ -1,15 +1,12 @@
 package com.example.examplehibernate;
 
-import entity.Booking;
 import entity.User;
-import hibernate.repository.BookingDaoImpl;
-import hibernate.repository.UserDaoImpl;
+import hibernate.repository.impl.UserDaoImpl;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(name = "LoginServlet", value = "/LoginServlet")
 public class LoginServlet extends HttpServlet {

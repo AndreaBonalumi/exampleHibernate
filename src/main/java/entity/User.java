@@ -2,7 +2,8 @@ package entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ public class User implements Serializable {
 
 
     @Temporal(TemporalType.DATE)
-    private Date created;
+    private LocalDate created;
 
     private boolean admin;
 
@@ -31,7 +32,7 @@ public class User implements Serializable {
 
     @Column(name = "bd")
     @Temporal(TemporalType.DATE)
-    private Date birthday;
+    private LocalDateTime birthday;
 
     @Column(unique = true)
     private String nPatente;
@@ -79,14 +80,6 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
     public boolean isAdmin() {
         return admin;
     }
@@ -103,11 +96,19 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public Date getBirthday() {
+    public LocalDate getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDate created) {
+        this.created = created;
+    }
+
+    public LocalDateTime getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDateTime birthday) {
         this.birthday = birthday;
     }
 

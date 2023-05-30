@@ -1,26 +1,26 @@
 package com.example.examplehibernate;
 
 import entity.Car;
-import hibernate.repository.CarDaoImpl;
+import hibernate.repository.CarDao;
+import hibernate.repository.impl.CarDaoImpl;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.util.Date;
+import java.time.LocalDate;
 
 @WebServlet(name = "InsertCarServlet", value = "/InsertCarServlet")
 public class InsertCarServlet extends HttpServlet {
 
-    private final CarDaoImpl carDao = new CarDaoImpl();
+    private final CarDao carDao = new CarDaoImpl();
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        Date date = new Date();
         Car car = new Car();
         car.setBrand(request.getParameter("brand"));
         car.setModel(request.getParameter("model"));
-        car.setCreated(date);
+        car.setCreated(LocalDate.now());
         car.setColor(request.getParameter("color"));
         car.setDescription(request.getParameter("description"));
         car.setLink(request.getParameter("link"));
