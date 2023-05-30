@@ -5,6 +5,6 @@
         <title>Login</title>
     </head>
     <body>
-        <a href="homePage.jsp">Entra</a>
+        <a href="LoginServlet">Entra</a>
     </body>
 </html>

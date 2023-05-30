@@ -33,7 +33,7 @@
         <th>Azioni</th>
     </tr>
     <c:forEach var="macchina" items="${cars}">
-        <tr>
+        <tr onclick="">
             <td>${macchina.id}</td>
             <td>${macchina.brand}</td>
             <td>${macchina.model}</td>
@@ -41,7 +41,8 @@
             <td>${macchina.description}</td>
             <td>${macchina.link}</td>
             <td>
-
+                <a href="ManageServlet?action=edit&id=${macchina.id}"><button type="button">Modifica</button></a>
+                <a href="ManageServlet?action=delete&id=${macchina.id}"><button onclick="window.alert('elemento cancellato')" type="button">Cancella</button></a>
             </td>
 
         </tr>

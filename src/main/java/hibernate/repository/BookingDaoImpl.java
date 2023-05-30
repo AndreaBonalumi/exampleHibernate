@@ -25,11 +25,11 @@ public class BookingDaoImpl implements BookingDao{
     }
 
     @Override
-    public Booking getById(int id) {
+    @SuppressWarnings("unchecked")
+    public List<Booking> getByIdUser(int id) {
         try {
-            String JPQL = "FROM Booking WHERE Booking.id = :id";
-            return (Booking) session.createQuery(JPQL).setParameter("id", id).getSingleResult();
-
+            String JPQL = "from Booking b join fetch b.idCar join b.idUser where b.idUser = :id";
+            return session.createQuery(JPQL).setParameter("id", id).getResultList();
         } catch (Exception e) {
             e.printStackTrace();
             return null;

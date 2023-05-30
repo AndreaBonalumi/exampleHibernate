@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page session="true" %>
 <html>
 <head>
     <title>Title</title>
@@ -14,9 +16,9 @@
 <nav>
   <div class="topnav">
 
-    <a href="homePage.jsp">Home</a>
+    <a href="HomePageServlet">Home</a>
     <a href="AutoServlet">Parco auto</a>
-    <a href="hello-servlet">Profilo utente</a>
+    <a href="profileUser.jsp">Profilo utente</a>
 
   </div>
 </nav>

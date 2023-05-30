@@ -28,7 +28,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getById(int id) {
         try {
-            String JPQL = "FROM User WHERE User.id = :id";
+            String JPQL = "FROM User WHERE id = :id";
             return (User) session.createQuery(JPQL).setParameter("id", id).getSingleResult();
 
         } catch (Exception e) {
