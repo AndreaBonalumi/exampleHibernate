@@ -20,25 +20,11 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        User temp = new User();
-        temp.setFirstName("Manuel");
-        temp.setLastName("Tocchi");
-        temp.setUsername("manuel.tocchi");
-        temp.setPassword("password");
-        temp.setEmail("manuel.tocchi@si2001.it");
-        temp.setnPatente("MI7834593");
-        temp.setCreated(LocalDate.now());
-        temp.setBirthday(LocalDate.now());
-        temp.setAdmin(true);
-
-        userDao.Insert(temp);
-
 
         String action = request.getParameter("action");
         switch (action) {
-            case "new": break;
             case "edit": break;
-            case "delete": break;
+            case "delete": deleteUser(request); break;
             default: login(request);
         }
 
@@ -49,7 +35,14 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if(action.equals("new")) {
+            newUser(request);
+        } else if (action.equals("edit")) {
 
+        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher(pageRecipient);
+        dispatcher.forward(request, response);
     }
 
 
@@ -59,7 +52,7 @@ public class UserServlet extends HttpServlet {
         User user;
 
         if (httpSession.getAttribute("user") == null) {
-            user =  userDao.getById(1);
+            user =  userDao.getById(3);
             httpSession.setAttribute("user", user);
         } else {
             user = (User) httpSession.getAttribute("user");
@@ -71,5 +64,32 @@ public class UserServlet extends HttpServlet {
         } else {
             pageRecipient = "BookingServlet";
         }
+    }
+
+    protected void newUser(HttpServletRequest request) {
+        User newUser = new User();
+
+        newUser.setAdmin(false);
+        newUser.setCreated(LocalDate.now());
+        newUser.setFirstName(request.getParameter("firstName"));
+        newUser.setLastName(request.getParameter("lastName"));
+        newUser.setUsername(request.getParameter("username"));
+        newUser.setPassword(request.getParameter("password"));
+        newUser.setEmail(request.getParameter("email"));
+        newUser.setnPatente(request.getParameter("nPatente"));
+        newUser.setBirthday(LocalDate.parse(request.getParameter("bd")));
+
+        userDao.Insert(newUser);
+
+        login(request);
+
+    }
+
+    protected void deleteUser(HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        User tempUser = userDao.getById(id);
+        userDao.delete(tempUser);
+
+        login(request);
     }
 }

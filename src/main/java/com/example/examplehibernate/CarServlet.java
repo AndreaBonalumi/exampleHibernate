@@ -40,6 +40,9 @@ public class CarServlet extends HttpServlet {
         } else if (action.equals("edit")) {
             doEdit(request);
         }
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher(pageRecipient);
+        dispatcher.forward(request, response);
     }
 
 

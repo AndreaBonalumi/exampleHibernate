@@ -34,20 +34,21 @@
               <th>Link</th>
               <th>Azioni</th>
           </tr>
-          <c:forEach var="macchina" items="${bookings}">
-          <tr>
-              <td>${macchina.id}</td>
-              <td>${macchina.brand}</td>
-              <td>${macchina.model}</td>
-              <td>${macchina.color}</td>
-              <td>${macchina.description}</td>
-              <td>${macchina.link}</td>
-              <td>
+          <c:if test="${bookings != null}">
+              <c:forEach var="macchina" items="${bookings}">
+              <tr>
+                  <td>${macchina.id}</td>
+                  <td>${macchina.brand}</td>
+                  <td>${macchina.model}</td>
+                  <td>${macchina.color}</td>
+                  <td>${macchina.description}</td>
+                  <td>${macchina.link}</td>
+                  <td>
 
-              </td>
-
-          </tr>
-          </c:forEach>
+                  </td>
+              </tr>
+              </c:forEach>
+          </c:if>
       </table>
   </c:if>
 
@@ -55,7 +56,7 @@
 
   <c:if test="${sessionScope.user.admin}">
       <h4>Lista utenti:</h4> <br><br>
-      <a href="UserServlet?action=new">Nuovo Utente</a> <br>
+      <a href="newUser.jsp">Nuovo Utente</a> <br>
 
       <table>
           <tr>
@@ -67,7 +68,7 @@
               <th>Admin</th>
               <th>Azioni</th>
           </tr>
-          <c:forEach var="tempUser" items="${users}">
+          <c:forEach var="tempUser" items="${userList}">
               <tr>
                   <td>${tempUser.id}</td>
                   <td>${tempUser.username}</td>
@@ -77,9 +78,8 @@
                   <td>${tempUser.admin}</td>
                   <td>
                       <a href=""><button type="button">Modifica</button> </a>
-                      <a href=""><button type="button">Cancella</button> </a>
+                      <a href="UserServlet?action=delete&id=${tempUser.id}"><button type="button" onclick="window.alert('Utente cancellato')">Cancella</button> </a>
                   </td>
-
               </tr>
           </c:forEach>
       </table>

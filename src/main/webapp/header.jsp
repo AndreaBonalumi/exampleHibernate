@@ -16,7 +16,7 @@
 <nav>
   <div class="topnav">
 
-    <a href="UserServlet">Home</a>
+    <a href="UserServlet?action=home">Home</a>
     <c:if test="${sessionScope.user.admin}">
       <a href="CarServlet?action=all">Parco auto</a>
     </c:if>
