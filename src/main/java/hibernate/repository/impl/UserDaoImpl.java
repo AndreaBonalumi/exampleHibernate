@@ -6,17 +6,13 @@ import hibernateConf.HibernateConf;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
-    private final Session session;
-
-    public UserDaoImpl () {session = HibernateConf.getSessionFactory().openSession();}
     @Override
     @SuppressWarnings("unchecked")
     public List<User> getAll() {
-        try {
+        try (Session session = HibernateConf.getSessionFactory().openSession()) {
             String JPQL = "FROM User";
             return session.createQuery(JPQL).getResultList();
 
@@ -28,7 +24,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getById(int id) {
-        try {
+        try (Session session = HibernateConf.getSessionFactory().openSession()){
             String JPQL = "FROM User WHERE id = :id";
             return (User) session.createQuery(JPQL).setParameter("id", id).getSingleResult();
 
@@ -41,7 +37,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void edit(User user) {
         Transaction transaction = null;
-        try {
+        try (Session session = HibernateConf.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.merge(user);
             transaction.commit();
@@ -57,7 +53,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void delete(User user) {
         Transaction transaction = null;
-        try {
+        try (Session session = HibernateConf.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.delete(user);
             transaction.commit();
@@ -72,7 +68,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void Insert(User user) {
         Transaction transaction = null;
-        try {
+        try (Session session = HibernateConf.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.save(user);
             transaction.commit();

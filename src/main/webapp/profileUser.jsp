@@ -25,6 +25,6 @@
 <p>Numero patente: ${sessionScope.user.nPatente}</p><br>
 
 
-<a href="/ProfileServlet"><button type="button">Modifica i tuoi dati</button></a>
+<a href="UserServlet?action=edit&id=${sessionScope.user.id}"><button type="button">Modifica i tuoi dati</button></a>
 </body>
 </html>

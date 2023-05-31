@@ -5,6 +5,6 @@
         <title>Login</title>
     </head>
     <body>
-        <a href="LoginServlet">Entra</a>
+        <a href="UserServlet?action=login">Entra</a>
     </body>
 </html>

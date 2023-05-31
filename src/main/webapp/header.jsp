@@ -16,9 +16,9 @@
 <nav>
   <div class="topnav">
 
-    <a href="HomePageServlet">Home</a>
+    <a href="UserServlet">Home</a>
     <c:if test="${sessionScope.user.admin}">
-      <a href="AutoServlet">Parco auto</a>
+      <a href="CarServlet?action=all">Parco auto</a>
     </c:if>
     <a href="profileUser.jsp">Profilo utente</a>
 

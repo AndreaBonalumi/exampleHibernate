@@ -15,7 +15,7 @@
 <br>
 <h1>Inserisci i dati della macchina</h1>
 
-<form action="InsertCarServlet" method="post">
+<form action="CarServlet?action=edit" method="post">
 
     <label for="brand">Marca*: </label><input id="brand" type="text" name="brand" placeholder="Lamborghini" required><br><br>
     <label for="model">Modello*: </label><input id="model" type="text" name="model" placeholder="Huracan" required><br><br>

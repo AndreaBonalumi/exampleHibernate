@@ -22,7 +22,6 @@ public class User implements Serializable {
     private String lastName;
 
 
-    @Temporal(TemporalType.DATE)
     private LocalDate created;
 
     private boolean admin;
@@ -31,13 +30,12 @@ public class User implements Serializable {
     private String email;
 
     @Column(name = "bd")
-    @Temporal(TemporalType.DATE)
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     @Column(unique = true)
     private String nPatente;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "idUser", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
     private Set<Booking> bookingSet = new HashSet<>();
 
     public int getId() {
@@ -104,11 +102,11 @@ public class User implements Serializable {
         this.created = created;
     }
 
-    public LocalDateTime getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDateTime birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

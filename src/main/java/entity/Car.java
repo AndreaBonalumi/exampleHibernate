@@ -22,11 +22,10 @@ public class Car {
     @NotNull
     private String color;
     @NotNull
-    @Temporal(TemporalType.DATE)
     private LocalDate created;
     private String link;
     private String description;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "Car", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "car", orphanRemoval = true)
     private Set<Booking> bookingSet = new HashSet<>();
 
     public int getId() {

@@ -18,7 +18,7 @@
 
 <h1>Modifica ${car.brand} ${car.model}</h1><br>
 
-<form action="EditServlet?id=${car.id}" method="post">
+<form action="CarServlet?action=edit&id=${car.id}" method="post">
 
     <span>Marca: ${car.brand}</span><br><br>
     <span>Modello: ${car.model}</span><br><br>

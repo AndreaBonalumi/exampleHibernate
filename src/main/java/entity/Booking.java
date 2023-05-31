@@ -14,11 +14,9 @@ public class Booking {
     private int id;
 
     @NotNull
-    @Temporal(TemporalType.DATE)
     private LocalDate dateBookingStart;
 
     @NotNull
-    @Temporal(TemporalType.DATE)
     private LocalDate getDateBookingEnd;
 
     @ManyToOne

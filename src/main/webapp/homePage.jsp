@@ -20,33 +20,70 @@
   <h1>Benvenuto <c:out value="${sessionScope.user.firstName}" /></h1>
 
   <br><br>
-  <h4>Le tue prenotazioni:</h4> <br><br>
-  <a href="/AutoServlet">Nuova prenotazione</a> <br>
+  <c:if test="${!sessionScope.user.admin}">
+      <h4>Le tue prenotazioni:</h4> <br><br>
+      <a href="BookingServlet?action=new">Nuova prenotazione</a> <br>
 
-  <table>
-      <tr>
-          <th>ID</th>
-          <th>Marca</th>
-          <th>Modello</th>
-          <th>Colore</th>
-          <th>Descrizione</th>
-          <th>Link</th>
-          <th>Azioni</th>
-      </tr>
-      <c:forEach var="macchina" items="${bookings}">
-      <tr onclick="">
-          <td>${macchina.id}</td>
-          <td>${macchina.brand}</td>
-          <td>${macchina.model}</td>
-          <td>${macchina.color}</td>
-          <td>${macchina.description}</td>
-          <td>${macchina.link}</td>
-          <td>
+      <table>
+          <tr>
+              <th>ID</th>
+              <th>Marca</th>
+              <th>Modello</th>
+              <th>Colore</th>
+              <th>Descrizione</th>
+              <th>Link</th>
+              <th>Azioni</th>
+          </tr>
+          <c:forEach var="macchina" items="${bookings}">
+          <tr>
+              <td>${macchina.id}</td>
+              <td>${macchina.brand}</td>
+              <td>${macchina.model}</td>
+              <td>${macchina.color}</td>
+              <td>${macchina.description}</td>
+              <td>${macchina.link}</td>
+              <td>
 
-          </td>
+              </td>
 
-      </tr>
-      </c:forEach>
+          </tr>
+          </c:forEach>
+      </table>
+  </c:if>
+
+
+
+  <c:if test="${sessionScope.user.admin}">
+      <h4>Lista utenti:</h4> <br><br>
+      <a href="UserServlet?action=new">Nuovo Utente</a> <br>
+
+      <table>
+          <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Creato</th>
+              <th>Numero Patente</th>
+              <th>Admin</th>
+              <th>Azioni</th>
+          </tr>
+          <c:forEach var="tempUser" items="${users}">
+              <tr>
+                  <td>${tempUser.id}</td>
+                  <td>${tempUser.username}</td>
+                  <td>${tempUser.email}</td>
+                  <td>${tempUser.created}</td>
+                  <td>${tempUser.nPatente}</td>
+                  <td>${tempUser.admin}</td>
+                  <td>
+                      <a href=""><button type="button">Modifica</button> </a>
+                      <a href=""><button type="button">Cancella</button> </a>
+                  </td>
+
+              </tr>
+          </c:forEach>
+      </table>
+  </c:if>
 </body>
 </html>
 
