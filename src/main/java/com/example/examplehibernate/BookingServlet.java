@@ -71,12 +71,12 @@ public class BookingServlet extends HttpServlet {
         List<Car> cars = carDao.getAll();
 
         for (Booking booking : bookings) {
-            if ((booking.getDateBookingEnd().isAfter(LocalDate.parse(request.getParameter("start")))
-                    || booking.getDateBookingStart().isBefore(LocalDate.parse(request.getParameter("end"))))
-                    || booking.getStatus() == 2) {
-                if (!carsDate.contains(booking.getCar())){
-                    carsDate.add(booking.getCar());
-                }
+            if ((booking.getDateBookingEnd().isBefore(LocalDate.parse(request.getParameter("start")))
+                    || booking.getDateBookingStart().isAfter(LocalDate.parse(request.getParameter("end"))))
+                    && !carsDate.contains(booking.getCar())) {
+                carsDate.add(booking.getCar());
+            } else if (booking.getStatus() == 2 && !carsDate.contains(booking.getCar())) {
+                carsDate.add(booking.getCar());
             }
         }
         for (Car car : cars) {
