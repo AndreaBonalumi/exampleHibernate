@@ -23,8 +23,9 @@ public class UserServlet extends HttpServlet {
 
         String action = request.getParameter("action");
         switch (action) {
-            case "edit": break;
+            case "edit": goEdit(request); break;
             case "delete": deleteUser(request); break;
+            case "user": viewUser(request); break;
             default: login(request);
         }
 
@@ -39,7 +40,9 @@ public class UserServlet extends HttpServlet {
         if(action.equals("new")) {
             newUser(request);
         } else if (action.equals("edit")) {
-
+            doEdit(request);
+        } else {
+            login(request);
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher(pageRecipient);
         dispatcher.forward(request, response);
@@ -52,7 +55,7 @@ public class UserServlet extends HttpServlet {
         User user;
 
         if (httpSession.getAttribute("user") == null) {
-            user =  userDao.getById(3);
+            user =  userDao.getById(1);
             httpSession.setAttribute("user", user);
         } else {
             user = (User) httpSession.getAttribute("user");
@@ -64,6 +67,7 @@ public class UserServlet extends HttpServlet {
         } else {
             pageRecipient = "BookingServlet";
         }
+
     }
 
     protected void newUser(HttpServletRequest request) {
@@ -91,5 +95,28 @@ public class UserServlet extends HttpServlet {
         userDao.delete(tempUser);
 
         login(request);
+    }
+    protected void goEdit(HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        User user = userDao.getById(id);
+        request.setAttribute("userProfile", user);
+
+        pageRecipient = "editUser.jsp";
+    }
+
+    protected void doEdit(HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        User user = userDao.getById(id);
+        userDao.edit(user);
+
+        login(request);
+    }
+
+    protected void viewUser(HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        User user = userDao.getById(id);
+        request.setAttribute("userBooking", user);
+
+        pageRecipient = "BookingServlet";
     }
 }

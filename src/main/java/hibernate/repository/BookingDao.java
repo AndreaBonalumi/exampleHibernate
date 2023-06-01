@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface BookingDao {
     List<Booking> getAll();
-    List<Booking> getByIdUser(int id);
+    List<Booking> getAllByUserId(int id);
+    Booking getById(int id);
     void insert(Booking booking);
     void delete(Booking booking);
     void edit(Booking booking);

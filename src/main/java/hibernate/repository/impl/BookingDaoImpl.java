@@ -24,7 +24,7 @@ public class BookingDaoImpl implements BookingDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Booking> getByIdUser(int id) {
+    public List<Booking> getAllByUserId(int id) {
         try (Session session = HibernateConf.getSessionFactory().openSession()) {
             String JPQL = "from Booking b where b.user.id = :id";
             return session.createQuery(JPQL).setParameter("id", id).getResultList();
@@ -34,6 +34,16 @@ public class BookingDaoImpl implements BookingDao {
         }
     }
 
+    @Override
+    public Booking getById(int id) {
+        try(Session session = HibernateConf.getSessionFactory().openSession()) {
+            String JPQL = "from Booking where id=:id";
+            return (Booking) session.createQuery(JPQL).setParameter("id", id).getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     @Override
     public void insert(Booking booking) {
         Transaction transaction = null;

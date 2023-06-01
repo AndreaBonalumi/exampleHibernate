@@ -41,11 +41,11 @@ public class Booking {
         this.dateBookingStart = dateBookingStart;
     }
 
-    public LocalDate getGetDateBookingEnd() {
+    public LocalDate getDateBookingEnd() {
         return getDateBookingEnd;
     }
 
-    public void setGetDateBookingEnd(LocalDate getDateBookingEnd) {
+    public void setDateBookingEnd(LocalDate getDateBookingEnd) {
         this.getDateBookingEnd = getDateBookingEnd;
     }
 

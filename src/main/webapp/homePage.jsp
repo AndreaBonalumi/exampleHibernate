@@ -22,31 +22,34 @@
   <br><br>
   <c:if test="${!sessionScope.user.admin}">
       <h4>Le tue prenotazioni:</h4> <br><br>
-      <a href="BookingServlet?action=new">Nuova prenotazione</a> <br>
+      <a href="newBooking.jsp">Nuova prenotazione</a> <br>
 
       <table>
           <tr>
               <th>ID</th>
-              <th>Marca</th>
-              <th>Modello</th>
-              <th>Colore</th>
-              <th>Descrizione</th>
-              <th>Link</th>
-              <th>Azioni</th>
+              <th>Data Inizio</th>
+              <th>Data Fine</th>
+              <th>Marca auto</th>
+              <th>Modello auto</th>
+              <th>Azioni possibili</th>
           </tr>
           <c:if test="${bookings != null}">
-              <c:forEach var="macchina" items="${bookings}">
-              <tr>
-                  <td>${macchina.id}</td>
-                  <td>${macchina.brand}</td>
-                  <td>${macchina.model}</td>
-                  <td>${macchina.color}</td>
-                  <td>${macchina.description}</td>
-                  <td>${macchina.link}</td>
-                  <td>
+              <c:forEach var="booking" items="${bookings}">
+                  <tr>
+                      <td>${booking.id}</td>
+                      <td>${booking.dateBookingStart}</td>
+                      <td>${booking.dateBookingEnd}</td>
+                      <td>${booking.car.brand}</td>
+                      <td>${booking.car.model}</td>
+                      <td>
+                          <c:if test="true">
 
-                  </td>
-              </tr>
+                              <a href="BookingServlet?action=view&id=${booking.id}"><button type="button">Modifica</button></a>
+                              <a href="BookingServlet?action=delete&id=${booking.id}"><button type="button" onclick="window.alert('prenotazione cancellalta')">Cancella</button></a>
+
+                          </c:if>
+                      </td>
+                  </tr>
               </c:forEach>
           </c:if>
       </table>
@@ -70,14 +73,14 @@
           </tr>
           <c:forEach var="tempUser" items="${userList}">
               <tr>
-                  <td>${tempUser.id}</td>
+                  <td><a href="UserServlet?action=user&id=${tempUser.id}">${tempUser.id}</a></td>
                   <td>${tempUser.username}</td>
                   <td>${tempUser.email}</td>
                   <td>${tempUser.created}</td>
                   <td>${tempUser.nPatente}</td>
                   <td>${tempUser.admin}</td>
                   <td>
-                      <a href=""><button type="button">Modifica</button> </a>
+                      <a href="UserServlet?action=edit&id=${tempUser.id}"><button type="button">Modifica</button></a>
                       <a href="UserServlet?action=delete&id=${tempUser.id}"><button type="button" onclick="window.alert('Utente cancellato')">Cancella</button> </a>
                   </td>
               </tr>
