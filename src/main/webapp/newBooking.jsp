@@ -16,11 +16,13 @@
 <h1>Prenotazione</h1>
 
 <form action="BookingServlet?action=new" method="post">
-    <label for="start">Data di inizio della prenotazione </label><input id="start" type="date" name="start" value="${param.start}"/> <br><br>
-    <label for="end">Data di inizio della prenotazione </label><input id="end" type="date" name="end" value="${param.end}" /><br><br>
+    <label for="start">Data di inizio della prenotazione </label><input type="date" name="start" value="${param.start}"/> <br><br>
+    <label for="end">Data di inizio della prenotazione </label><input type="date" name="end" value="${param.end}" /><br><br>
     <input type="submit" value="cerca auto disponibili">
 </form><br><br>
 <form action="BookingServlet?action=book" method="post">
+    <input hidden="true" id="start" type="date" name="start" value="${param.start}"/>
+    <input hidden="true" id="end" type="date" name="end" value="${param.end}" />
     <c:if test="${carsDate != null}">
         <table>
             <thead>

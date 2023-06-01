@@ -20,6 +20,7 @@ import java.util.List;
 public class BookingServlet extends HttpServlet {
 
     private final BookingDao bookingDao = new BookingDaoImpl();
+    CarDao carDao = new CarDaoImpl();
     private String pageRecipient;
 
     @Override
@@ -62,7 +63,7 @@ public class BookingServlet extends HttpServlet {
     }
 
     protected void lookAvailable(HttpServletRequest request) {
-        CarDao carDao = new CarDaoImpl();
+
         List<Booking> bookings = bookingDao.getAll();
         List<Car> carsDate = new ArrayList<>();
         List<Car> cars = carDao.getAll();
@@ -87,8 +88,8 @@ public class BookingServlet extends HttpServlet {
         CarDao carDao = new CarDaoImpl();
         HttpSession httpSession = request.getSession();
 
-        booking.setDateBookingStart(LocalDate.now());
-        booking.setDateBookingEnd(LocalDate.now());
+        booking.setDateBookingStart(LocalDate.parse(request.getParameter("start")));
+        booking.setDateBookingEnd(LocalDate.parse(request.getParameter("end")));
         booking.setCar(carDao.getById(Integer.parseInt(request.getParameter("carSelected"))));
         booking.setUser((User) httpSession.getAttribute("user"));
 

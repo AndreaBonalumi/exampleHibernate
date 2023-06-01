@@ -55,7 +55,7 @@ public class UserServlet extends HttpServlet {
         User user;
 
         if (httpSession.getAttribute("user") == null) {
-            user =  userDao.getById(1);
+            user =  userDao.getById(3);
             httpSession.setAttribute("user", user);
         } else {
             user = (User) httpSession.getAttribute("user");

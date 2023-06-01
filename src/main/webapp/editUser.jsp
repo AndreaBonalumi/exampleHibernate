@@ -12,6 +12,7 @@
 </head>
 <body>
 
+<jsp:include page="header.jsp" />
 <h1>Modifica dati:</h1>
 
 <form action="UserServlet?action=edit?id=${param.userProfile.id}" method="post">
