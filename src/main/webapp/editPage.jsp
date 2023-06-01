@@ -16,6 +16,8 @@
     Car car = (Car) request.getAttribute("car");
 %>
 
+<jsp:include page="header.jsp" />
+
 <h1>Modifica ${car.brand} ${car.model}</h1><br>
 
 <form action="CarServlet?action=edit&id=${car.id}" method="post">
