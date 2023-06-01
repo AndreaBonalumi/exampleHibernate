@@ -17,13 +17,12 @@ public class Booking {
     private LocalDate dateBookingStart;
 
     @NotNull
-    private LocalDate getDateBookingEnd;
+    private LocalDate dateBookingEnd;
+
+    private int status;
 
     @ManyToOne
     private User user;
-
-    @ManyToOne
-    private Car car;
 
     public int getId() {
         return id;
@@ -42,11 +41,19 @@ public class Booking {
     }
 
     public LocalDate getDateBookingEnd() {
-        return getDateBookingEnd;
+        return dateBookingEnd;
     }
 
-    public void setDateBookingEnd(LocalDate getDateBookingEnd) {
-        this.getDateBookingEnd = getDateBookingEnd;
+    public void setDateBookingEnd(LocalDate dateBookingEnd) {
+        this.dateBookingEnd = dateBookingEnd;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public User getUser() {
@@ -64,4 +71,8 @@ public class Booking {
     public void setCar(Car car) {
         this.car = car;
     }
+
+    @ManyToOne
+    private Car car;
+
 }

@@ -32,6 +32,8 @@ public class BookingServlet extends HttpServlet {
             case "delete": deleteBooking(request); break;
             case "edit": editBooking(request); break;
             case "user": viewByUserAdmin(request); break;
+            case "approve": approveBooking(request); break;
+            case "decline": declineBooking(request); break;
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(pageRecipient);
@@ -69,8 +71,10 @@ public class BookingServlet extends HttpServlet {
         List<Car> cars = carDao.getAll();
 
         for (Booking booking : bookings) {
-            if (booking.getDateBookingEnd().isBefore(LocalDate.parse(request.getParameter("start")))) {
-                carsDate.add(booking.getCar());
+            if (booking.getDateBookingEnd().isBefore(LocalDate.parse(request.getParameter("start"))) || booking.getStatus() == 2) {
+                if (!carsDate.contains(booking.getCar())){
+                    carsDate.add(booking.getCar());
+                }
             }
         }
         for (Car car : cars) {
@@ -92,6 +96,7 @@ public class BookingServlet extends HttpServlet {
         booking.setDateBookingEnd(LocalDate.parse(request.getParameter("end")));
         booking.setCar(carDao.getById(Integer.parseInt(request.getParameter("carSelected"))));
         booking.setUser((User) httpSession.getAttribute("user"));
+        booking.setStatus(0);
 
         bookingDao.insert(booking);
 
@@ -106,7 +111,13 @@ public class BookingServlet extends HttpServlet {
 
         pageRecipient = "newBooking.jsp";
     }
-    protected void editBooking(HttpServletRequest request) {}
+    protected void editBooking(HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Booking booking = bookingDao.getById(id);
+        request.setAttribute("start", booking.getDateBookingStart());
+        request.setAttribute("end", booking.getDateBookingEnd());
+        lookAvailable(request);
+    }
 
     protected void viewByUserAdmin(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
@@ -114,5 +125,31 @@ public class BookingServlet extends HttpServlet {
         request.setAttribute("bookings", bookings);
 
         pageRecipient = "userBooking.jsp";
+    }
+    protected void viewByUserAdmin(HttpServletRequest request, int id) {
+        List<Booking> bookings = bookingDao.getAllByUserId(id);
+        request.setAttribute("bookings", bookings);
+
+        pageRecipient = "userBooking.jsp";
+    }
+
+    protected void approveBooking(HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Booking booking = bookingDao.getById(id);
+        booking.setStatus(1);
+        bookingDao.edit(booking);
+
+        request.setAttribute("userBooking", booking.getUser());
+
+        viewByUserAdmin(request, booking.getUser().getId());
+    }
+
+    protected void declineBooking(HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Booking booking = bookingDao.getById(id);
+        booking.setStatus(2);
+        bookingDao.edit(booking);
+
+        viewByUserAdmin(request);
     }
 }

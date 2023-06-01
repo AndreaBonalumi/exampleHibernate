@@ -25,6 +25,7 @@
             <th>Data fine</th>
             <th>Marca</th>
             <th>Modello</th>
+            <th>Stato</th>
             <th>Azioni</th>
         </tr>
         <c:forEach var="tempbooking" items="${bookings}">
@@ -34,8 +35,10 @@
                 <td>${tempbooking.dateBookingEnd}</td>
                 <td>${tempbooking.car.brand}</td>
                 <td>${tempbooking.car.model}</td>
+                <td>${tempbooking.status}</td>
                 <td>
-                    <a href="BookingServlet?action=delete&id=${tempbooking.id}"><button type="button" onclick="window.alert('prenotazione rifiutata')">Rifiuta</button> </a>
+                    <a href="BookingServlet?action=approve&id=${tempbooking.id}"><button type="button" onclick="window.alert('prenotazione approvata')">Approva</button> </a>
+                    <a href="BookingServlet?action=decline&id=${tempbooking.id}"><button type="button" onclick="window.alert('prenotazione rifiutata')">Rifiuta</button> </a>
                 </td>
             </tr>
         </c:forEach>

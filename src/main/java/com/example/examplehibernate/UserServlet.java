@@ -20,7 +20,6 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
         String action = request.getParameter("action");
         switch (action) {
             case "edit": goEdit(request); break;
@@ -55,7 +54,7 @@ public class UserServlet extends HttpServlet {
         User user;
 
         if (httpSession.getAttribute("user") == null) {
-            user =  userDao.getById(3);
+            user =  userDao.getById(2);
             httpSession.setAttribute("user", user);
         } else {
             user = (User) httpSession.getAttribute("user");

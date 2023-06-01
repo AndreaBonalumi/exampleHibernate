@@ -31,6 +31,7 @@
               <th>Data Fine</th>
               <th>Marca auto</th>
               <th>Modello auto</th>
+              <th>Stato</th>
               <th>Azioni possibili</th>
           </tr>
           <c:if test="${bookings != null}">
@@ -41,10 +42,11 @@
                       <td>${booking.dateBookingEnd}</td>
                       <td>${booking.car.brand}</td>
                       <td>${booking.car.model}</td>
+                      <td>${booking.status}</td>
                       <td>
-                          <c:if test="true">
+                          <c:if test="${booking.status == 0 && booking.dataBookingStart.plusDays(2).isBefore(LocalDate.now())}">
 
-                              <a href="BookingServlet?action=view&id=${booking.id}"><button type="button">Modifica</button></a>
+                              <a href="BookingServlet?action=edit&id=${booking.id}"><button type="button">Modifica</button></a>
                               <a href="BookingServlet?action=delete&id=${booking.id}"><button type="button" onclick="window.alert('prenotazione cancellalta')">Cancella</button></a>
 
                           </c:if>
@@ -83,6 +85,7 @@
                       <a href="UserServlet?action=edit&id=${tempUser.id}"><button type="button">Modifica</button></a>
                       <a href="UserServlet?action=delete&id=${tempUser.id}"><button type="button" onclick="window.alert('Utente cancellato')">Cancella</button> </a>
                   </td>
+
               </tr>
           </c:forEach>
       </table>
