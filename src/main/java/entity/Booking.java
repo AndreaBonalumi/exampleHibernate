@@ -12,17 +12,15 @@ public class Booking {
     @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @NotNull
     private LocalDate dateBookingStart;
-
     @NotNull
     private LocalDate dateBookingEnd;
-
     private int status;
-
     @ManyToOne
     private User user;
+    @ManyToOne
+    private Car car;
 
     public int getId() {
         return id;
@@ -72,7 +70,5 @@ public class Booking {
         this.car = car;
     }
 
-    @ManyToOne
-    private Car car;
 
 }

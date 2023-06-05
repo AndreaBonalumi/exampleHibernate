@@ -44,7 +44,7 @@
                       <td>${booking.car.model}</td>
                       <td>${booking.status}</td>
                       <td>
-                          <c:if test="${booking.status == 0 && booking.dataBookingStart.plusDays(2).isBefore(LocalDate.now())}">
+                          <c:if test="${booking.status > -1}">
 
                               <a href="BookingServlet?action=edit&id=${booking.id}"><button type="button">Modifica</button></a>
                               <a href="BookingServlet?action=delete&id=${booking.id}"><button type="button" onclick="window.alert('prenotazione cancellalta')">Cancella</button></a>
@@ -61,6 +61,17 @@
 
   <c:if test="${sessionScope.user.admin}">
       <h4>Lista utenti:</h4> <br><br>
+      <form action="UserServlet?action=filter" method="post">
+          <label for="filter">Filtra: </label>
+          <select name="fieldSearch">
+              <option name="firstName" value="firstName">First name</option>
+              <option name="lastName" value="lastName">Last name</option>
+              <option name="username" value="username">username</option>
+              <option name="email" value="email">Email</option>
+          </select>
+          <input id="filter" type="text" placeholder="cerca.." name="filter" />
+          <input type="submit" value="cerca" />
+      </form>
       <a href="newUser.jsp">Nuovo Utente</a> <br>
 
       <table>

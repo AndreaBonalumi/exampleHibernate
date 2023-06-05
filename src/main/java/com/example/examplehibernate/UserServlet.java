@@ -9,6 +9,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "UserServlet", value = "/UserServlet")
@@ -36,13 +37,14 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        if(action.equals("new")) {
-            newUser(request);
-        } else if (action.equals("edit")) {
-            doEdit(request);
-        } else {
-            login(request);
+
+        switch (action) {
+            case "new": newUser(request); break;
+            case "edit": doEdit(request); break;
+            case "filter": filterUser(request); break;
+            default: login(request);
         }
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(pageRecipient);
         dispatcher.forward(request, response);
     }
@@ -54,7 +56,7 @@ public class UserServlet extends HttpServlet {
         User user;
 
         if (httpSession.getAttribute("user") == null) {
-            user =  userDao.getById(2);
+            user =  userDao.getByUsPw(request.getParameter("username"), request.getParameter("password"));
             httpSession.setAttribute("user", user);
         } else {
             user = (User) httpSession.getAttribute("user");
@@ -117,5 +119,16 @@ public class UserServlet extends HttpServlet {
         request.setAttribute("userBooking", user);
 
         pageRecipient = "BookingServlet";
+    }
+
+    protected void filterUser(HttpServletRequest request) {
+        String field = request.getParameter("fieldSearch");
+        String value = request.getParameter("filter");
+
+        List<User> users = userDao.searchUsers(field, value);
+
+        request.setAttribute("userList", users);
+
+        pageRecipient = "homePage.jsp";
     }
 }

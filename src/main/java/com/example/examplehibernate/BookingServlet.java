@@ -28,7 +28,6 @@ public class BookingServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         switch (action) {
-            case "home": viewByUser(request); break;
             case "delete": deleteBooking(request); break;
             case "edit": editBooking(request); break;
             case "user": viewByUserAdmin(request); break;
@@ -44,10 +43,10 @@ public class BookingServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String action = request.getParameter("action");
-        if(action.equals("new")) {
-            lookAvailable(request);
-        } else if (action.equals("book")) {
-            bookCar(request);
+        switch (action) {
+            case "home": viewByUser(request); break;
+            case "new": lookAvailable(request); break;
+            case "book": bookCar(request); break;
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(pageRecipient);
@@ -66,24 +65,14 @@ public class BookingServlet extends HttpServlet {
 
     protected void lookAvailable(HttpServletRequest request) {
 
-        List<Booking> bookings = bookingDao.getAll();
-        List<Car> carsDate = new ArrayList<>();
-        List<Car> cars = carDao.getAll();
+        LocalDate start = LocalDate.parse(request.getParameter("start"));
+        LocalDate end = LocalDate.parse(request.getParameter("end"));
 
-        for (Booking booking : bookings) {
-            if ((booking.getDateBookingEnd().isBefore(LocalDate.parse(request.getParameter("start")))
-                    || booking.getDateBookingStart().isAfter(LocalDate.parse(request.getParameter("end"))))
-                    && !carsDate.contains(booking.getCar())) {
-                carsDate.add(booking.getCar());
-            } else if (booking.getStatus() == 2 && !carsDate.contains(booking.getCar())) {
-                carsDate.add(booking.getCar());
-            }
-        }
-        for (Car car : cars) {
-            if(!carsDate.contains(car)) {
-                carsDate.add(car);
-            }
-        }
+        List<Booking> bookings = bookingDao.getByDate(start, end);
+        List<Car> carsDate;
+
+        carsDate = searchAvailable(start, end, bookings);
+
         request.setAttribute("carsDate", carsDate);
 
         pageRecipient = "newBooking.jsp";
@@ -103,8 +92,6 @@ public class BookingServlet extends HttpServlet {
         bookingDao.insert(booking);
 
         pageRecipient = "newBooking.jsp";
-
-
     }
 
     protected void deleteBooking(HttpServletRequest request) {
@@ -116,9 +103,15 @@ public class BookingServlet extends HttpServlet {
     protected void editBooking(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
         Booking booking = bookingDao.getById(id);
+        List<Car> cars = new ArrayList<>();
+
         request.setAttribute("start", booking.getDateBookingStart());
         request.setAttribute("end", booking.getDateBookingEnd());
-        lookAvailable(request);
+
+        searchAvailable(booking.getDateBookingStart(), booking.getDateBookingEnd(), bookingDao.getAllByUserId(booking.getUser().getId()));
+
+        request.setAttribute("carsDate", cars);
+        pageRecipient = "newBooking.jsp";
     }
 
     protected void viewByUserAdmin(HttpServletRequest request) {
@@ -153,5 +146,21 @@ public class BookingServlet extends HttpServlet {
         bookingDao.edit(booking);
 
         viewByUserAdmin(request);
+    }
+
+    protected List<Car> searchAvailable(LocalDate start, LocalDate end, List<Booking> bookings)
+    {
+        List<Car> carsDate = new ArrayList<>();
+        List<Car> cars = carDao.getAll();
+
+        for (Booking booking : bookings) {
+            if (booking.getDateBookingStart().isBefore(end)) {
+                carsDate.add(booking.getCar());
+            } else if (booking.getDateBookingEnd().isAfter(start)) {
+                carsDate.add(booking.getCar());
+            }
+        }
+        cars.removeAll(carsDate);
+        return cars;
     }
 }
