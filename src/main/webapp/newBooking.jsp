@@ -16,8 +16,8 @@
 <h1>Prenotazione</h1>
 
 <form action="BookingServlet?action=new" method="post">
-    <label for="start">Data di inizio della prenotazione </label><input type="date" name="start" value="${param.start}"/> <br><br>
-    <label for="end">Data di fine della prenotazione </label><input type="date" name="end" value="${param.end}" /><br><br>
+    <label for="start">Data di inizio della prenotazione </label><input type="date" name="start" value="${param.start}" max="${param.end}" /> <br><br>
+    <label for="end">Data di fine della prenotazione </label><input type="date" name="end" value="${param.end}" min="${param.start}" /><br><br>
     <input type="submit" value="cerca auto disponibili">
 </form><br><br>
 <form action="BookingServlet?action=book" method="post">

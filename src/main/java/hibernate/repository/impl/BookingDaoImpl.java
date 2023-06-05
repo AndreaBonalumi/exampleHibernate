@@ -1,6 +1,7 @@
 package hibernate.repository.impl;
 
 import entity.Booking;
+import entity.Car;
 import hibernate.repository.BookingDao;
 import hibernateConf.HibernateConf;
 import org.hibernate.Session;
@@ -48,9 +49,9 @@ public class BookingDaoImpl implements BookingDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Booking> getByDate(LocalDate start, LocalDate end) {
+    public List<Car> getByDate(LocalDate start, LocalDate end) {
         try(Session session = HibernateConf.getSessionFactory().openSession()) {
-            String JPQL = "from Booking where dateBookingStart between :start and :end or dateBookingEnd between :start and :end and status != 2";
+            String JPQL = "SELECT c FROM Car c WHERE NOT EXISTS (SELECT b FROM Booking b WHERE b.car = c AND (b.dateBookingStart BETWEEN :start AND :end OR b.dateBookingEnd BETWEEN :start AND :end OR :start BETWEEN b.dateBookingStart and b.dateBookingEnd or :end between b.dateBookingStart and b.dateBookingEnd) OR b.status = 2)";
             return session.createQuery(JPQL).setParameter("start", start).setParameter("end", end).getResultList();
         }
     }

@@ -13,7 +13,6 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "BookingServlet", value = "/BookingServlet")
@@ -28,11 +27,24 @@ public class BookingServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         switch (action) {
-            case "delete": deleteBooking(request); break;
-            case "edit": editBooking(request); break;
-            case "user": viewByUserAdmin(request); break;
-            case "approve": approveBooking(request); break;
-            case "decline": declineBooking(request); break;
+            case "delete":
+                deleteBooking(request);
+                break;
+            case "edit":
+                editBooking(request);
+                break;
+            case "user":
+                viewByUserAdmin(request);
+                break;
+            case "approve":
+                approveBooking(request);
+                break;
+            case "decline":
+                declineBooking(request);
+                break;
+            case "home":
+                viewByUser(request);
+                break;
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(pageRecipient);
@@ -44,9 +56,15 @@ public class BookingServlet extends HttpServlet {
 
         String action = request.getParameter("action");
         switch (action) {
-            case "home": viewByUser(request); break;
-            case "new": lookAvailable(request); break;
-            case "book": bookCar(request); break;
+            case "home":
+                viewByUser(request);
+                break;
+            case "new":
+                lookAvailable(request);
+                break;
+            case "book":
+                bookCar(request);
+                break;
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(pageRecipient);
@@ -68,12 +86,9 @@ public class BookingServlet extends HttpServlet {
         LocalDate start = LocalDate.parse(request.getParameter("start"));
         LocalDate end = LocalDate.parse(request.getParameter("end"));
 
-        List<Booking> bookings = bookingDao.getByDate(start, end);
-        List<Car> carsDate;
+        List<Car> cars = bookingDao.getByDate(start, end);
 
-        carsDate = searchAvailable(start, end, bookings);
-
-        request.setAttribute("carsDate", carsDate);
+        request.setAttribute("carsDate", cars);
 
         pageRecipient = "newBooking.jsp";
     }
@@ -100,15 +115,11 @@ public class BookingServlet extends HttpServlet {
 
         pageRecipient = "newBooking.jsp";
     }
+
     protected void editBooking(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
         Booking booking = bookingDao.getById(id);
-        List<Car> cars = new ArrayList<>();
-
-        request.setAttribute("start", booking.getDateBookingStart());
-        request.setAttribute("end", booking.getDateBookingEnd());
-
-        searchAvailable(booking.getDateBookingStart(), booking.getDateBookingEnd(), bookingDao.getAllByUserId(booking.getUser().getId()));
+        List<Car> cars = bookingDao.getByDate(booking.getDateBookingStart(), booking.getDateBookingEnd());
 
         request.setAttribute("carsDate", cars);
         pageRecipient = "newBooking.jsp";
@@ -121,6 +132,7 @@ public class BookingServlet extends HttpServlet {
 
         pageRecipient = "userBooking.jsp";
     }
+
     protected void viewByUserAdmin(HttpServletRequest request, int id) {
         List<Booking> bookings = bookingDao.getAllByUserId(id);
         request.setAttribute("bookings", bookings);
@@ -146,21 +158,5 @@ public class BookingServlet extends HttpServlet {
         bookingDao.edit(booking);
 
         viewByUserAdmin(request);
-    }
-
-    protected List<Car> searchAvailable(LocalDate start, LocalDate end, List<Booking> bookings)
-    {
-        List<Car> carsDate = new ArrayList<>();
-        List<Car> cars = carDao.getAll();
-
-        for (Booking booking : bookings) {
-            if (booking.getDateBookingStart().isBefore(end)) {
-                carsDate.add(booking.getCar());
-            } else if (booking.getDateBookingEnd().isAfter(start)) {
-                carsDate.add(booking.getCar());
-            }
-        }
-        cars.removeAll(carsDate);
-        return cars;
     }
 }
