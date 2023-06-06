@@ -1,4 +1,4 @@
-<%--
+<%@ page import="java.time.LocalDate" %><%--
   Created by IntelliJ IDEA.
   User: Si2001
   Date: 29/05/2023
@@ -35,6 +35,7 @@
               <th>Azioni possibili</th>
           </tr>
           <c:if test="${bookings != null}">
+              <c:set var="today" value="<%= java.time.LocalDate.now() %>" />
               <c:forEach var="booking" items="${bookings}">
                   <tr>
                       <td>${booking.id}</td>
@@ -44,7 +45,7 @@
                       <td>${booking.car.model}</td>
                       <td>${booking.status}</td>
                       <td>
-                          <c:if test="${booking.status > -1}">
+                          <c:if test="${booking.status != 2 && today < booking.dateBookingStart.minusDays(2)}">
 
                               <a href="BookingServlet?action=edit&id=${booking.id}"><button type="button">Modifica</button></a>
                               <a href="BookingServlet?action=delete&id=${booking.id}"><button type="button" onclick="window.alert('prenotazione cancellalta')">Cancella</button></a>
@@ -56,7 +57,6 @@
           </c:if>
       </table>
   </c:if>
-
 
 
   <c:if test="${sessionScope.user.admin}">

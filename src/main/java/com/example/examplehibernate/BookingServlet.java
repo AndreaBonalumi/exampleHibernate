@@ -157,6 +157,6 @@ public class BookingServlet extends HttpServlet {
         booking.setStatus(2);
         bookingDao.edit(booking);
 
-        viewByUserAdmin(request);
+        viewByUserAdmin(request, booking.getUser().getId());
     }
 }

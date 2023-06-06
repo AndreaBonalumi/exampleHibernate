@@ -8,6 +8,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class UserServlet extends HttpServlet {
             case "edit": goEdit(request); break;
             case "delete": deleteUser(request); break;
             case "user": viewUser(request); break;
-            default: login(request);
+            default: home(request);
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(pageRecipient);
@@ -51,16 +52,30 @@ public class UserServlet extends HttpServlet {
 
 
 
-    protected void login(HttpServletRequest request){
+    protected void login(HttpServletRequest request) {
         HttpSession httpSession = request.getSession();
         User user;
 
-        if (httpSession.getAttribute("user") == null) {
-            user =  userDao.getByUsPw(request.getParameter("username"), request.getParameter("password"));
-            httpSession.setAttribute("user", user);
+        user =  userDao.getByUsPw(request.getParameter("username"), request.getParameter("password"));
+
+        if (user == null) {
+            httpSession.setAttribute("error", "user name o password errate");
+
+            pageRecipient = "index.jsp";
         } else {
-            user = (User) httpSession.getAttribute("user");
+            if(httpSession.getAttribute("error") != null)
+                httpSession.removeAttribute("error");
+
+            httpSession.setAttribute("user", user);
+            home(request);
         }
+
+    }
+    protected void home(HttpServletRequest request) {
+        HttpSession httpSession = request.getSession();
+
+        User user = (User) httpSession.getAttribute("user");
+
         if (user.isAdmin()) {
             List<User> users = userDao.getAll();
             request.setAttribute("userList", users);
@@ -68,7 +83,6 @@ public class UserServlet extends HttpServlet {
         } else {
             pageRecipient = "BookingServlet";
         }
-
     }
 
     protected void newUser(HttpServletRequest request) {
@@ -86,7 +100,7 @@ public class UserServlet extends HttpServlet {
 
         userDao.Insert(newUser);
 
-        login(request);
+        home(request);
 
     }
 
@@ -95,7 +109,7 @@ public class UserServlet extends HttpServlet {
         User tempUser = userDao.getById(id);
         userDao.delete(tempUser);
 
-        login(request);
+        home(request);
     }
     protected void goEdit(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
@@ -110,7 +124,7 @@ public class UserServlet extends HttpServlet {
         User user = userDao.getById(id);
         userDao.edit(user);
 
-        login(request);
+        home(request);
     }
 
     protected void viewUser(HttpServletRequest request) {
