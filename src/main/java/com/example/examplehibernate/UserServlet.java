@@ -122,6 +122,10 @@ public class UserServlet extends HttpServlet {
     protected void doEdit(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
         User user = userDao.getById(id);
+        user.setFirstName(request.getParameter("firstName"));
+        user.setLastName(request.getParameter("lastName"));
+        user.setPassword(request.getParameter("password"));
+        user.setnPatente(request.getParameter("nPatente"));
         userDao.edit(user);
 
         home(request);
